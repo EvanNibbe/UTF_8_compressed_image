@@ -63,7 +63,15 @@ In the background, where the simplified Python3 code is being interpreted, follo
 53. if color_result[7]<=0: \n\t# the pixel in question allows adjacent pixels to bleed into it, but this pixel doesn’t bleed into adjacent pixels (when color bleeding is considered by the renderer).
 54. elif color_result[7]>=1: \n\t# the pixel in question bleeds into adjacent pixels that have a color_result[7] which is lower than the color_result[7] for this pixel.
 55. else: \n\t # the pixel in question can slightly bleed into other pixels (with a lower color_result[7] than there is in this one) and other pixels can bleed into this pixel (if the other pixel has a higher color_result[7] than this pixel).
-56. Note: operating systems must be designed in such a way that future systems can utilize the other 8 possible values without requiring too deep a level of deciphering the driver code. <br>
+56. Note: color_result indicies 8 through 15 are for physics-based modeling.
+57. color_result[8] is the mass (in kg) of whatever is at pos(x, y, z) at time_0.
+58. color_result[9] is the temperature (minimum of 0 K) of whatever is at pos(x, y, z) at time_0.
+59. color_result[10] is the charge (in Coulombs) of whatever is at pos(x, y, z) at time_0.
+60. color_result[11] is the linear velocity (in m/s) on the x-axis of whatever is at pos(x, y, z) at time_0.
+61. color_result[12] is the linear velocity (in m/s) on the y-axis of whatever is at pos(x, y, z) at time_0.
+62. color_result[13] is the linear velocity (in m/s) on the z-axis of whatever is at pos(x, y, z) at time_0.
+63. color_result[14] is the angular velocity (in radians/second) around the z-axis (where a positive value for a particle which has something constrained on the side of the particle facing in the direction of the positive x-axis would have that constraint on that side move towards the side of the particle facing in the direction of the positive y-axis) for whatever is at pos(x, y, z) at time_0.
+64. color_result[15] is the angular velocity (in radians/second) around the y-axis of whatever is at pos(x, y, z) at time_0. <br>
 <br>
 The code is then either evaluated for every pixel to draw in the render of the compressed image glyph, or it is just run for a few of the pixels (where the computer can interpolate between the final colors of pixels to cover the remaining pixels within the space of the one character).
 <br> <br>
