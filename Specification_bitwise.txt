@@ -3,7 +3,7 @@ UTF-8 compressed image glyph standard <br>
 Memory: 707 bytes to represent one character. <br>
 <br>
 1 byte: Starting sequence: 11111011 <br>
-4 bytes: UTF-8 reference char “name” (each byte starts with “10”) <br>
+4 bytes: UTF-8 reference char “name” (if two characters in the same file have the first 5 bytes identical to each other, they must be rendered the same way, and only the first version of the code gets executed (and the image thus generated is saved in temporary memory)). <br>
 <br>
 702 bytes: these bytes have to be interpreted gradually to extract out each six consecutive bits into its own “6-bit-char” (there are 936 6-bit-chars to be extracted) (the latter two bits of the first byte is the highest order two bits of the next 6-bit-char (whose lowest order 4 bits is the higher-order half of the next byte), and so on), these 6-bit-chars are converted to ASCII chars using the attached table. The resulting ASCII chars are interpreted according to a simplified version of Python3 (optimized for use in the context of generating the UTF-8 char in question).<br>
 <br>
