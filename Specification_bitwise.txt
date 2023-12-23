@@ -1,0 +1,60 @@
+UTF-8 compressed image glyph standard <br>
+<br>
+Memory: 707 bytes to represent one character. <br>
+<br>
+1 byte: Starting sequence: 11111011 <br>
+4 bytes: UTF-8 reference char “name” (each byte starts with “10”) <br>
+<br>
+702 bytes: these bytes have to be interpreted gradually to extract out each six consecutive bits into its own “6-bit-char” (there are 936 6-bit-chars to be extracted) (the latter two bits of the first byte is the highest order two bits of the next 6-bit-char (whose lowest order 4 bits is the higher-order half of the next byte), and so on), these 6-bit-chars are converted to ASCII chars using the attached table. The resulting ASCII chars are interpreted according to a simplified version of Python3 (optimized for use in the context of generating the UTF-8 char in question).<br>
+<br>
+In the background, where the simplified Python3 code is being interpreted, follow these rules: <br>
+1. There is automatically defined a context variable (does not get written in the 856 character stream): pos: list=[x,y,z, minx, miny, minz, maxx, maxy, maxZ] # where x is a floating point value representing horizontal (or width) distance to the left (negative x direction (to a minimum of minx)) or right (positive x direction (to a maximum of maxx)) of the origin of the drawing space; y is a float representing the forward (positive y (to a maximum of maxy), imagined as if the computer screen was laid flat in front of the user like expected) direction or its opposite (negative y direction, to a minimum of miny) from the origin of the drawing space; z is generally going to be assumed to be 0, but the operating system must be able to support nonzero values for forward-compatibility reasons (z from minz to maxz is for sampling a volume of 3D space for future glyph-model systems).
+2. The context the code runs in (not included inside the user’s code) automatically creates the same effect as “from math import ceil, comb, copysign, fabs, factorial as fact, floor, fmod, frexp, fsum, gcd, isclose, isfinite, isinf, isnan, isqrt as isrt, lcm, ldexp, modf, nextafter, perm, prod, remainder, sumprod, trunc, ulp, cbrt, exp, exp2, expm1, log1p, log2, log10, pow, sqrt as srt, acos, asin, atan, atan2, cos, dist, hypot, sin, tan, degrees, radians, acosh, asinh, atanh, cosh, sinh, tanh, erf, erfc, gamma, lgamma, pi, e, tau”
+3. print is treated as a function that always converts what is inside to null
+4. input is treated as a function that always returns the next float in pos (as if pos were saved to a circular global queue of Python3 floating point numbers which input progresses along)
+5. import is an ignored word when used
+6. system is an ignored word when used
+7. exec is an ignored word when used
+8. lambda is an ignored word when used
+9. str is an ignored word when used
+10. Each instance of the word for causes the array associated with the loop to be truncated to 16 items if that array exceeds 16 items.
+11. The maximum dimensionality of an array is 2 (meaning that list comprehensions deeper than the second for loop are ignored).
+12. Each instance of the word while has prepended to it (just during interpretation): “c_stop: int=0\n” (with the correct number of \t to maintain the same context level as the word while), and has the following replace the “:” that comes immediately after the word while: “c_stop<16:\n\tc_stop+=1” (to prevent an infinite loop; also the \t is replicated enough times to avoid syntax errors).
+13. The lines of code are individually understood to end with the character sequence \n (not the newline symbol, since that isn’t in the character set of 6-bit chars).
+14. Spaces in front of a line of code are ignored, only the character sequence \t (registered as a “tab” in the simplified Python3 interpreter) has syntactic value for creating internal sub-contexts of code.
+15. The maximum depth of sub-contexts is 4.
+16. A function cannot call itself.
+17. All calls to other functions within functions must only be to the function as it was defined further up in the code (it never uses the later redefinition).
+18. The interpreter considers the first line which starts with (x, y, z): as executed in a very special way. The way this gets interpreted is as if this line were written as: “def color_spot(x, y, z):” with each line within the immediate sub-context checked during execution to see if it contains solely a floating point variable (no operations performed on it), in which case each such “hanging float” is treated as the next entry in a “color_results: list=[]” containing at most 16 floating point numbers. Execution for the color_spot function ends as soon as either a “return” is reached (at which point, while len(color_results)<16, then color_results.append(0.0)), or the end of the context is reached (while len(color_results)<16, then color_results.append(0.0)), or when len(color_results)==16. In any of those three cases, execution stops on the Python3 code, and the color_result array is used to generate the color of the spot being sampled in the render of the character.
+19. if color_result[0]<=0: \n\t# the pixel in question does not use red.
+20. elif color_result[0]>=1: \n\t# the pixel in question has red turned (fully) on.
+21. else: \n\t # the pixel in question is that fraction of the “red level” available to the pixel.
+22. if color_result[1]<=0: \n\t# the pixel in question does not use green.
+23. elif color_result[1]>=1: \n\t# the pixel in question has green turned (fully) on.
+24. else: \n\t # the pixel in question is that fraction of the “green level” available to the pixel.
+25. if color_result[2]<=0: \n\t# the pixel in question does not use blue.
+26. elif color_result[2]>=1: \n\t# the pixel in question has blue turned (fully) on.
+27. else: \n\t # the pixel in question is that fraction of the “blue level” available to the pixel.
+28. if color_result[3]<=0: \n\t# the pixel in question has a large degree of transparency in its red coloration (when transparency is considered by the renderer).
+29. elif color_result[3]>=1: \n\t# the pixel in question has no transparency for the red coloration.
+30. else: \n\t # the pixel in question is that fraction of the “red transparency” available to the pixel.
+31. if color_result[4]<=0: \n\t# the pixel in question has a large degree of transparency in its green coloration (when transparency is considered by the renderer).
+32. elif color_result[4]>=1: \n\t# the pixel in question has no transparency for the green coloration.
+33. else: \n\t # the pixel in question is that fraction of the “green transparency” available to the pixel.
+34. if color_result[5]<=0: \n\t# the pixel in question has a large degree of transparency in its blue coloration (when transparency is considered by the renderer).
+35. elif color_result[5]>=1: \n\t# the pixel in question has no transparency for the blue coloration.
+36. else: \n\t # the pixel in question is that fraction of the “blue transparency” available to the pixel.
+37. if color_result[6]<=0: \n\t# the pixel in question has a large degree of transparency (when transparency is considered by the renderer).
+38. elif color_result[6]>=1: \n\t# the pixel in question has no transparency.
+39. else: \n\t # the pixel in question is that fraction of the “transparency” available to the pixel.
+40. if color_result[7]<=0: \n\t# the pixel in question allows adjacent pixels to bleed into it, but this pixel doesn’t bleed into adjacent pixels (when color bleeding is considered by the renderer).
+41. elif color_result[7]>=1: \n\t# the pixel in question bleeds into adjacent pixels that have a color_result[7] which is lower than the color_result[7] for this pixel.
+42. else: \n\t # the pixel in question can slightly bleed into other pixels (with a lower color_result[7] than there is in this one) and other pixels can bleed into this pixel (if the other pixel has a higher color_result[7] than this pixel).
+43. Note: operating systems must be designed in such a way that future systems can utilize the other 8 possible values without requiring too deep a level of deciphering the driver code. <br>
+<br>
+The code is then either evaluated for every pixel to draw in the render of the compressed image glyph, or it is just run for a few of the pixels (where the computer can interpolate between the final colors of pixels to cover the remaining pixels within the space of the one character).
+<br> <br>
+Note: having “from math import ceil, comb, copysign, fabs, factorial as fact, floor, fmod, frexp, fsum, gcd, isclose, isfinite, isinf, isnan, isqrt as isrt, lcm, ldexp, modf, nextafter, perm, prod, remainder, sumprod, trunc, ulp, cbrt, exp, exp2, expm1, log1p, log2, log10, pow, sqrt as srt, acos, asin, atan, atan2, cos, dist, hypot, sin, tan, degrees, radians, acosh, asinh, atanh, cosh, sinh, tanh, erf, erfc, gamma, lgamma, pi, e, tau” <br>
+Already defined automatically itself saves the user 424 characters out of 936 characters total programmers can use. <br>
+The massive limitations on the while loop, for loop, list comprehension, recursion, and number of sub-contexts means that the Turing Halting problem is avoided, since all possible programs can be written out as sequential code in finite space (or can be converted to an excel spreadsheet), with the finite space being well under 10 MB of memory. <br>
+This is important for avoiding any sort of malicious code (even though a couple of the math module functions allow you to operate on arbitrarily large arrays, such arrays would need to be generated either within the actual text of the code (which is super small), or within for loops (which only let you generate 16 numbers each)), which won’t be able to begin arbitrary code execution, but will try to interfere with users who have slower devices. <br>
