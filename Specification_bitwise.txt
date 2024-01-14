@@ -1,11 +1,11 @@
 UTF-8 compressed image glyph standard <br>
 <br>
-Memory: 707 bytes to represent one character. <br>
+Memory: 941 bytes to represent one character. <br>
 <br>
 1 byte: Starting sequence: 11111011 <br>
-4 bytes: UTF-8 reference char “name” (if two characters in the same file have the first 5 bytes identical to each other, they must be rendered the same way, and only the first version of the code gets executed (and the image thus generated is saved in temporary memory)). <br>
+4 bytes: (each of the 4 bytes start with "10") UTF-8 reference char “name” (if two characters in the same file have the first 5 bytes identical to each other, they must be rendered the same way, and only the first version of the code gets executed (and the image thus generated is saved in temporary memory)). <br>
 <br>
-702 bytes: these bytes have to be interpreted gradually to extract out each six consecutive bits into its own “6-bit-char” (there are 936 6-bit-chars to be extracted) (the latter two bits of the first byte is the highest order two bits of the next 6-bit-char (whose lowest order 4 bits is the higher-order half of the next byte), and so on), these 6-bit-chars are converted to ASCII chars using the attached table. The resulting ASCII chars are interpreted according to a simplified version of Python3 (optimized for use in the context of generating the UTF-8 char in question).<br>
+936 bytes: these bytes all start with "10" with the lower-order 6 bits that actually get interpreted gradually  into its own “6-bit-char” (there are 936 6-bit-chars to be extracted), these 6-bit-chars are converted to ASCII chars using the attached table. The resulting ASCII chars are interpreted according to a simplified version of Python3 (optimized for use in the context of generating the UTF-8 char in question).<br>
 <br>
 In the background, where the simplified Python3 code is being interpreted, follow these rules: <br>
 1. There is automatically defined a context variable (does not get written in the 856 character stream): pos: list=[x,y,z, minx, miny, minz, maxx, maxy, maxZ] # where x is a floating point value representing horizontal (or width) distance to the left (negative x direction (to a minimum of minx)) or right (positive x direction (to a maximum of maxx)) of the origin of the drawing space; y is a float representing the forward (positive y (to a maximum of maxy), imagined as if the computer screen was laid flat in front of the user like expected) direction or its opposite (negative y direction, to a minimum of miny) from the origin of the drawing space; z is generally going to be assumed to be 0, but the operating system must be able to support nonzero values for forward-compatibility reasons (z from minz to maxz is for sampling a volume of 3D space for future glyph-model systems).
