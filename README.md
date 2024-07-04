@@ -1,2 +1,9 @@
-# UTF_8_compressed_image
+# Deprecation notice
+This specification is deprecated by the writer of this specification because this image compression standard for writing glyphs has two fatal problems: <br>
+1. The Turing Halting problem (yes, the standard does make things crystal clear that there are a strictly finite number of times that things can loop, and there is a hard cap on the number of characters that can be used for building a state machine. However, for "real" computer systems with memory and computing speed bound by the laws of silicon chemistry and the laws of modern industrial production (as opposed to just being bound by the laws of physics; where if we were just bound bh the laws of physics, this standard would make perfect sense), the amount of time it takes to figure out the right small python program that acts like shader code capable of drawing a given emoji, that time might as well be infinite from the perspective of a human waiting a human lifetime for the computer to generate the custom emoji code. <br>
+2. Computers trying to do a good job representing the emoji will be very slow theoretically, and a bad actor could easily make it insanely difficult just to generate a single pixel in the image, which is then compounded when an author wants to use this system to write a book using a custom font built off of this system (note: building a custom font off of this system is a very good reason why the UTF-8 system needs to include an extension that directly specifies (unambiguously) how a computer MUST represent the graphical image generated). <br>
+3. I came up with a better standard for the unicode system to use as an extension. See: https://github.com/EvanNibbe/UTF_8_Glyph_All_Future_Character_models
+
+## UTF_8_compressed_image
+
 This is a specification for an addition to the UTF-8 standard for text display such that all future glyphs that could ever be designed are covered.
